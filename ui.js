@@ -64,8 +64,10 @@ function ui_tile() {
 	const horizontal_margin_text = horizontal_margin.toString() + "px";
 	const vertical_margin_text = vertical_margin.toString() + "px";
 	
-	centered_content_div.style.marginLeft = horizontal_margin_text;
-	centered_content_div.style.marginTop = vertical_margin_text;
+	centered_content_div.style.paddingLeft = horizontal_margin_text;
+	centered_content_div.style.paddingRight = horizontal_margin_text;
+	centered_content_div.style.paddingTop = vertical_margin_text;
+	centered_content_div.style.paddingBottom = vertical_margin_text;
 	
 	for (const key of Object.keys(displaying_videos)) {
 		displaying_videos[key].player.setSize(best_video_width, best_video_height);

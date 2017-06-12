@@ -71,6 +71,10 @@ body {
 	background-color: orange;
 }
 
+#centered_content {
+	background-color: black;
+}
+
 #videosdisplay {
 	overflow: hidden;
 }
