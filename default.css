@@ -19,7 +19,14 @@ body {
 }
 
 #add_session, #add_video {
+	background-color: LightGreen;
+	border: 1px solid black;
 	float: right;
+	padding: 2px;
+	display: flex;
+	align-items: center;
+	/*height: 25px;
+	width: 25px;*/
 }
 
 #session_table_container, #video_table_container {
@@ -37,11 +44,11 @@ body {
 }
 
 .delete_session_button, .remove_video_button {
-	/*background-color: red;*/
-	/*border: 1px solid black;
-	border: none;*/
-	/*height: 25px;
-	width: 25px;*/
+	background-color: Tomato;
+	border: 1px solid black;
+	padding: 0px;
+	height: 20px;
+	width: 20px;
 }
 
 .session_radio_button, .video_visibility_checkbox{

@@ -11,6 +11,7 @@ Here are some example links to get the gist of it:
 Try visiting the site from multiple browser windows.
 
 The implementation is in javascript and uses no external libraries except for the [youtube iframe api](https://developers.google.com/youtube/iframe_api_reference). It is fully functional but its user inteface could be made to look much nicer and some quality of life features might be missing.
+Some SVG icons are from [iconic](https://useiconic.com/open).
 
 A lot of modern html and javascript features are used which probably only work in recent versions of Chrome and Firefox. More specifically persistance is achieved with [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Storage) and communication between tabs with [BroadcastChannels](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel).
 

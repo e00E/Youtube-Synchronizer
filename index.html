@@ -8,7 +8,12 @@
 <body>
 <div id="user_interface">
 <div class="controls">
-<b>Sessions: </b><button id="add_session" type="button" title="Create and join a new emtpy session.">+</button><br>
+<b>Sessions: </b>
+<button id="add_session" type="button" title="Create and join a new emtpy session.">
+<svg height="16" width="16" viewBox="0 0 8 8">
+   <path d="M3 0v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2z" />
+</svg>
+</button><br>
 <div id="session_table_container">
 <table id="session_table">
 <tbody>
@@ -17,7 +22,11 @@
 </div>
 </div>
 <div class="controls">
-<b>Videos: </b><button id="add_video" type="button" title="Add and show a new video.">+</button><br>
+<b>Videos: </b><button id="add_video" type="button" title="Add and show a new video.">
+<svg height="16" width="16" viewBox="0 0 8 8">
+   <path d="M3 0v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2z" />
+</svg>
+</button><br>
 <div id="video_table_container">
 <table id="video_table">
 <tbody>
@@ -27,16 +36,31 @@
 </div>
 <div class="controls">
 <b>Playback: </b><br>
-<button id="play" type="button" title="Resume playback of all videos.">play</button>
-<button id="pause" type="button" title="Pause playback of all videos.">pause</button>
+<button id="play" type="button" title="Resume playback of all videos.">
+<svg width="16" height="16" viewBox="0 0 8 8">
+  <path d="M0 0v6l6-3-6-3z" transform="translate(1 1)" />
+</svg>
+</button>
+<button id="pause" type="button" title="Pause playback of all videos.">
+<svg width="16" height="16" viewBox="0 0 8 8">
+  <path d="M0 0v6h2v-6h-2zm4 0v6h2v-6h-2z" transform="translate(1 1)" />
+</svg>
+</button>
 <button id="resync" type="button" title="Pause and resynchronize playback of all videos.">resync</button>
 <br>
-<button id="seek" type="button" title="Seek all videoes to a specific time.">seek to</button>
+<button id="seek" type="button" title="Seek all videoes to a specific time.">
+<svg width="16" height="16" viewBox="0 0 8 8">
+  <path d="M0 0v6l4-3-4-3zm4 3v3l4-3-4-3v3z" transform="translate(0 1)" />
+</svg>
+<svg width="16" height="16" viewBox="0 0 8 8">
+  <path d="M4 0l-4 3 4 3v-6zm0 3l4 3v-6l-4 3z" transform="translate(0 1)" />
+</svg>
+</button>
 <input type="text" id="seek_time" placeholder="hh:mm:ss" value="" size="4">
 </div>
 <div class="controls">
 <b>Other: </b><br>
-<button id="share_link" type="button" title="Create a link containing the current session to send to other people.">share link</button>
+<button id="share_link" type="button" title="Create a link containing the current session to send to other people.">share</button>
 </div>
 <div style="clear: both"></div>
 <div id="help_text">
