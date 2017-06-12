@@ -406,6 +406,7 @@ document.getElementById("share_link").onclick = function() {
 	// Delete existing videos
 	params.delete("v");
 	params.delete("t");
+	params.delete("m");
 	
 	// Add new videos
 	for (const key of Object.keys(session.videos)) {
