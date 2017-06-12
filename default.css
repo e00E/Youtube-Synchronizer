@@ -1,0 +1,74 @@
+body {
+	/* No margin so that videos have no space to the edge of the window */
+	margin: 0px;
+	/* Make sure there won't be scroll bars since videos will resize automatically */
+	overflow: hidden;
+}
+
+#user_interface {
+	overflow: hidden;
+}
+
+.controls{
+	float: left;
+	margin: 10px;
+}
+
+#help_text {
+	margin-left: 10px;
+}
+
+#add_session, #add_video {
+	float: right;
+}
+
+#session_table_container, #video_table_container {
+	max-height: 100px;
+	overflow: auto;
+	float: left;
+}
+
+#session_table, #video_table {
+	border-collapse: collapse;
+}
+
+#session_table, #video_table, th, td {
+	/*border: 1px solid black;*/
+}
+
+.delete_session_button, .remove_video_button {
+	/*background-color: red;*/
+	/*border: 1px solid black;
+	border: none;*/
+	/*height: 25px;
+	width: 25px;*/
+}
+
+.session_radio_button, .video_visibility_checkbox{
+	/* height: 25px;
+	width: 25px; */
+}
+
+.video_offset_text {
+	width: 50px;
+	background-color: transparent;
+	border: 1px solid black;
+	text-align: right;
+}
+
+#seek_time {
+	text-align: right;
+}
+
+.active_video, .active_session {
+	background-color: orange;
+}
+
+#videosdisplay {
+	overflow: hidden;
+}
+
+iframe {
+	/* Videos need to float so there is no space between them vertically */
+	float: left;
+}
