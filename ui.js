@@ -428,9 +428,9 @@ function parse_time(input) {
 		if(parts.length === 3) {
 			const hours = parseInt(parts[0]);
 			const minutes = parseInt(parts[1]);
-			const seconds = parseFloat(parts[2]);
+			let seconds = parseFloat(parts[2]);
 			if(! (isNaN(hours) || isNaN(minutes) || isNaN(seconds))) {
-				const seconds = hours * 60 * 60 + minutes * 60 + seconds;
+				seconds = hours * 60 * 60 + minutes * 60 + seconds;
 				if(seconds >= 0.0) { return seconds; }
 			}
 		}
