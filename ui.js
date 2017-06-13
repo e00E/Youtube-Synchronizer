@@ -462,7 +462,7 @@ function show_ui() {
 	toggle_ui.parentNode.removeChild(toggle_ui);
 	other_controls.appendChild(toggle_ui);
 	toggle_ui.textContent = "hide UI";
-	user_interface.style.display = "";
+	user_interface.style.display = "block";
 	ui_is_hidden = false;
 	ui_tile();
 }
