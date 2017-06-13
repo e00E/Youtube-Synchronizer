@@ -17,60 +17,65 @@ let displaying_videos = {};
 // To do this we assume all video's have the same aspect ratio of 16/9 and then tile the window in a way that maximizes video size.
 // There might be an analytical solution instead of checking all minimal tilings...
 function ui_tile() {
-	const video_aspect_ratio = 16 / 9;
-	const window_height = window.innerHeight - user_interface.clientHeight;
-	// This seems to work better than window.innerWidth because it does not include a vertical scroll bar into the width
-	const window_width = document.body.clientWidth;
 	const number_of_videos = Object.keys(displaying_videos).length;
 	
-	let best_video_width = 0;
-	let best_video_height = 0;
-	
-	let best_columns = 0;
-	let best_rows = 0;
-	
-	let i;
-	// If two tilings have the same area (for example when displaying 2 16:9 videos in a full screen window on 16:9 monitor,
-	// then we prefer the tiling with less rows. To change make i be the number of columns instead of rows.
-	for(i = 1; i <= number_of_videos; i++) {
-		const rows = i;
-		const columns = Math.ceil(number_of_videos / rows);
-		const effective_aspect_ratio = (window_width / columns) / (window_height / rows);
-		let potential_video_width;
-		let potential_video_height;
-		if(effective_aspect_ratio <= video_aspect_ratio) {
-			potential_video_width = window_width / columns;
-			potential_video_height = potential_video_width / video_aspect_ratio;
-		} else {
-			potential_video_height = window_height / rows;
-			potential_video_width = potential_video_height * video_aspect_ratio;
+	if(number_of_videos > 0) {
+		const video_aspect_ratio = 16 / 9;
+		const window_height = window.innerHeight - user_interface.clientHeight;
+		// This seems to work better than window.innerWidth because it does not include a vertical scroll bar into the width
+		const window_width = document.body.clientWidth;
+		
+		let best_video_width = 0;
+		let best_video_height = 0;
+		
+		let best_columns = 0;
+		let best_rows = 0;
+		
+		let i;
+		// If two tilings have the same area (for example when displaying 2 16:9 videos in a full screen window on 16:9 monitor,
+		// then we prefer the tiling with less rows. To change make i be the number of columns instead of rows.
+		for(i = 1; i <= number_of_videos; i++) {
+			const rows = i;
+			const columns = Math.ceil(number_of_videos / rows);
+			const effective_aspect_ratio = (window_width / columns) / (window_height / rows);
+			let potential_video_width;
+			let potential_video_height;
+			if(effective_aspect_ratio <= video_aspect_ratio) {
+				potential_video_width = window_width / columns;
+				potential_video_height = potential_video_width / video_aspect_ratio;
+			} else {
+				potential_video_height = window_height / rows;
+				potential_video_width = potential_video_height * video_aspect_ratio;
+			}
+			if(potential_video_width * potential_video_height > best_video_width * best_video_height) {
+				best_video_width = potential_video_width;
+				best_video_height = potential_video_height;
+				best_columns = columns;
+				best_rows = rows;
+			}
 		}
-		if(potential_video_width * potential_video_height > best_video_width * best_video_height) {
-			best_video_width = potential_video_width;
-			best_video_height = potential_video_height;
-			best_columns = columns;
-			best_rows = rows;
+		
+		// In addition to tiling the videos, also center the whole page by setting margins appropriately.
+		// TODO: I did not find a css solution for centering everything correctly, but maybe I just need to look harder...
+		
+		// Set controls to have the same width as a video row
+		const total_video_width = best_columns * best_video_width;
+		const total_video_height = best_rows * best_video_height;
+		const horizontal_margin = (window_width - total_video_width) / 2.0;
+		const vertical_margin = (window_height - total_video_height) / 2.0;
+		const horizontal_margin_text = horizontal_margin.toString() + "px";
+		const vertical_margin_text = vertical_margin.toString() + "px";
+		
+		centered_content_div.style.paddingLeft = horizontal_margin_text;
+		centered_content_div.style.paddingRight = horizontal_margin_text;
+		centered_content_div.style.paddingTop = vertical_margin_text;
+		centered_content_div.style.paddingBottom = vertical_margin_text;
+		
+		for (const key of Object.keys(displaying_videos)) {
+			displaying_videos[key].player.setSize(best_video_width, best_video_height);
 		}
-	}
-	
-	// In addition to tiling the videos, also center the whole page by setting margins appropriately.
-	// TODO: I did not find a css solution for centering everything correctly, but maybe I just need to look harder...
-	
-	// Set controls to have the same width as a video row
-	const total_video_width = best_columns * best_video_width;
-	const total_video_height = best_rows * best_video_height;
-	const horizontal_margin = (window_width - total_video_width) / 2.0;
-	const vertical_margin = (window_height - total_video_height) / 2.0;
-	const horizontal_margin_text = horizontal_margin.toString() + "px";
-	const vertical_margin_text = vertical_margin.toString() + "px";
-	
-	centered_content_div.style.paddingLeft = horizontal_margin_text;
-	centered_content_div.style.paddingRight = horizontal_margin_text;
-	centered_content_div.style.paddingTop = vertical_margin_text;
-	centered_content_div.style.paddingBottom = vertical_margin_text;
-	
-	for (const key of Object.keys(displaying_videos)) {
-		displaying_videos[key].player.setSize(best_video_width, best_video_height);
+	} else {
+		centered_content_div.style.padding = "0px";
 	}
 }
 
