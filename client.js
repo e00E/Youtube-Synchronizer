@@ -102,7 +102,6 @@ function init() {
 		
 		join_session(session);
 	} else { // If we dont have videos in url parameters we can join any session
-		user_interface.style.display = "block";
 		if(! join_any_session()) {
 			create_session("initial");
 			join_session("initial");

@@ -86,6 +86,12 @@ Note that for key presses you might need remove focus from the youtube players b
 The source code is here: <a href="https://github.com/e00E/Youtube-Synchronizer">https://github.com/e00E/Youtube-Synchronizer</a>.
 </div>
 </div>
+<!-- Hide or show UI earlier than execution of the other scripts to make it less noticable. -->
+<script>
+const url = new URL(window.location.href);
+if(url.searchParams.get("v") !== null) { document.getElementById("user_interface").style.display = "none"; }
+else { user_interface.style.display = "block"; }
+</script>
 <div id="centered_content">
 <div id="videosdisplay"></div>
 </div>
