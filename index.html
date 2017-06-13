@@ -11,6 +11,7 @@ Sorry, this website requires javascript to do anything meaningful.<br>
 If you don't want to enable javascript you can still find the source code at <a href="https://github.com/e00E/Youtube-Synchronizer">https://github.com/e00E/Youtube-Synchronizer</a>.
 </noscript>
 <div id="user_interface">
+<div id="controls_container">
 <div class="controls">
 <b>Sessions: </b>
 <button id="add_session" type="button" title="Create and join a new emtpy session.">
@@ -41,23 +42,23 @@ If you don't want to enable javascript you can still find the source code at <a 
 <div id="other_controls" class="controls">
 <b>Other: </b><br>
 <button id="share_link" type="button" title="Create a link containing the current session to send to other people.">share</button>
-<button id="toggle_ui" type="button" title="Show or hide the user interface.">hide UI</button>
 </div>
 <div id="draggable_controls_fixed" class="controls">
-<b>Playback: </b><br>
-<div id="draggable_controls" style="background-color: white;">
-<button id="play" type="button" title="Resume playback of all videos.">
-<svg width="16" height="16" viewBox="0 0 8 8">
+<div id="draggable_controls">
+<div id="button_group">
+<button id="playpause" type="button" title="Play or pause all videos.">
+<svg id="play_svg" width="32" height="32" viewBox="0 0 8 8">
   <path d="M0 0v6l6-3-6-3z" transform="translate(1 1)" />
 </svg>
-</button>
-<button id="pause" type="button" title="Pause playback of all videos.">
-<svg width="16" height="16" viewBox="0 0 8 8">
+<svg id="pause_svg" style="display: none;" width="16" height="16" viewBox="0 0 8 8">
   <path d="M0 0v6h2v-6h-2zm4 0v6h2v-6h-2z" transform="translate(1 1)" />
 </svg>
 </button>
 <button id="resync" type="button" title="Pause and resynchronize playback of all videos.">resync</button>
+<button id="toggle_ui" type="button" title="Show or hide the user interface.">hide UI</button>
+</div>
 <br>
+<!-- Not sure if I want to keep seeking by text if we already have the slider
 <button id="seek" type="button" title="Seek all videoes to a specific time.">
 <svg width="16" height="16" viewBox="0 0 8 8">
   <path d="M0 0v6l4-3-4-3zm4 3v3l4-3-4-3v3z" transform="translate(0 1)" />
@@ -66,7 +67,9 @@ If you don't want to enable javascript you can still find the source code at <a 
   <path d="M4 0l-4 3 4 3v-6zm0 3l4 3v-6l-4 3z" transform="translate(0 1)" />
 </svg>
 </button>
-<input type="text" id="seek_time" placeholder="hh:mm:ss" value="" size="4">
+<input type="text" id="seek_time" placeholder="hh:mm:ss" value="" size="4"><br>-->
+<input id="seek_slider" type="range" min="0" max="0" step="any">
+</div>
 </div>
 </div>
 <div style="clear: both"></div>
@@ -96,7 +99,7 @@ else { user_interface.style.display = "block"; }
 <div id="videosdisplay"></div>
 </div>
 <div id="drag_helper" style="display: none; position: fixed; top: 0px; left: 0px; height: 100%; width: 100%; z-index: 100;"></div>
-<div id="draggable_controls_container" draggable="true" style="display: none; position: absolute; top: 0px; left: 0px; z-index: 101;">
+<div id="draggable_controls_container" draggable="true">
 </div>
 <script defer src="messages.js"></script>
 <script defer src="session.js"></script>

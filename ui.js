@@ -96,12 +96,14 @@ function on_state_change(id, event) {
 			event.target.seekTo(get_playback_position(session) + session.videos[id].offset, true);
 			if(session.videos[id].muted) { displaying_videos[id].player.mute(); }
 			else { displaying_videos[id].player.unMute(); }
+			compute_seek_ranges();
 		}
-	} else if(state === 1) {
+	} else if(state === 0) { // stop
+	} else if(state === 1) { // play
 		initiate_play();
-	} else if(state === 2) {
+	} else if(state === 2) { // pause
 		initiate_pause();
-	} else if(state === 3) {
+	} else if(state === 3) { // buffering
 	}
 }
 
@@ -146,6 +148,7 @@ function ui_hide_video(id) {
 		const video = displaying_videos[id];
 		video.player.destroy();
 		delete displaying_videos[id];
+		compute_seek_ranges();
 	}
 }
 
@@ -159,12 +162,18 @@ function ui_pause() {
 	for (const key of Object.keys(displaying_videos)) {
 		displaying_videos[key].player.pauseVideo();
 	}
+	play_svg.style.display = "block";
+	pause_svg.style.display = "none";
 }
 
 function ui_resume() {
 	for (const key of Object.keys(displaying_videos)) {
-		displaying_videos[key].player.playVideo();
+		const video = displaying_videos[key];
+		// only play if video is not stopped so that finished videos dont start over when play is pressed
+		if(video.player.getPlayerState() !== 0) { video.player.playVideo(); }
 	}
+	play_svg.style.display = "none";
+	pause_svg.style.display = "block";
 }
 
 function ui_seek(time) {
@@ -277,6 +286,7 @@ function ui_video_offset_change_remote(id, offset) {
 			row.childNodes[2].childNodes[0].value = offset.toString();
 		}
 	}
+	compute_seek_ranges();
 }
 
 function ui_video_mute_remote(id, muted) {
@@ -380,13 +390,6 @@ function initiate_play() {
 	write_storage();
 }
 
-document.getElementById("play").onclick = function() {
-	const session = sessions[active_session];
-	if(! session.playing) {
-		initiate_play();
-	}
-}
-
 function initiate_pause() {
 	const message = make_pause_message(active_session);
 	channel.postMessage(message);
@@ -394,13 +397,18 @@ function initiate_pause() {
 	write_storage();
 }
 
-document.getElementById("pause").onclick = function() {
+const play_svg = document.getElementById("play_svg")
+const pause_svg = document.getElementById("pause_svg")
+document.getElementById("playpause").onclick = function() {
 	const session = sessions[active_session];
 	if(session.playing) {
 		initiate_pause();
+	} else { 
+		initiate_play();
 	}
 }
 
+/* Not sure if I want to keep seeking by text if we already have the slider
 const seek_time_element = document.getElementById("seek_time");
 document.getElementById("seek").onclick = function() {
 	const number = parse_time(seek_time_element.value);
@@ -411,6 +419,30 @@ document.getElementById("seek").onclick = function() {
 		handle_seek_message(message.data);
 		write_storage();
 	}
+}*/
+
+// call this func only after intializing of videos is done!!
+const seek_slider = document.getElementById("seek_slider");
+function compute_seek_ranges() {
+	const session = sessions[active_session];
+	
+	let shortest_duration = Number.POSITIVE_INFINITY;
+	for (const key of Object.keys(displaying_videos)) {
+		const video_session = session.videos[key];
+		const video_displaying = displaying_videos[key];
+		
+		const duration = video_displaying.player.getDuration() - video_session.offset
+		if(duration < shortest_duration) { shortest_duration = duration; }
+	}
+	seek_slider.max = shortest_duration;
+}
+
+seek_slider.onchange = function() {
+	const session = sessions[active_session];
+	const message = make_seek_message(active_session, parseFloat(seek_slider.value));
+	channel.postMessage(message);
+	handle_seek_message(message.data);
+	write_storage();
 }
 
 document.getElementById("resync").onclick = function() {
@@ -479,8 +511,6 @@ toggle_ui.onclick = function() {
 function show_ui() {
 	draggable_controls.parentNode.removeChild(draggable_controls);
 	draggable_controls_fixed.appendChild(draggable_controls);
-	toggle_ui.parentNode.removeChild(toggle_ui);
-	other_controls.appendChild(toggle_ui);
 	toggle_ui.textContent = "hide UI";
 	user_interface.style.display = "block";
 	ui_is_hidden = false;
@@ -491,16 +521,14 @@ function hide_ui() {
 	user_interface.style.display = "none";
 	ui_is_hidden = true;
 	ui_tile();
-	toggle_ui.parentNode.removeChild(toggle_ui);
 	toggle_ui.textContent = "show UI";
-	draggable_controls.appendChild(toggle_ui);
 	draggable_controls.parentNode.removeChild(draggable_controls);
 	draggable_controls_container.appendChild(draggable_controls);
 }
 
 function show_draggable_controls_container() {
 	if(draggable_timer !== null) { window.clearTimeout(draggable_timer); }
-	draggable_controls_container.style.display = "";
+	draggable_controls_container.style.display = "block";
 	draggable_controls_container_is_hidden = false;
 	fade_out_draggable_controls_container();
 }
@@ -513,7 +541,7 @@ function hide_draggable_controls_container() {
 let draggable_timer = null;
 function fade_out_draggable_controls_container() {
 	window.clearTimeout(draggable_timer);
-	draggable_timer = window.setTimeout(hide_draggable_controls_container, 5000);
+	draggable_timer = window.setTimeout(hide_draggable_controls_container, 50000);
 }
 
 document.addEventListener("keydown", function(event) {
@@ -605,9 +633,16 @@ function observe_mutes() {
 	}
 }
 
+function observe_playback_position() {
+	const session = sessions[active_session];
+	const position = get_playback_position(session);
+	seek_slider.value = position.toString();
+}
+
 function ui_init() {
 	// There is no mute event in the youtube player api so we need to manually check if mute state changed
 	mute_observer = window.setInterval(observe_mutes, 10000);
+	window.setInterval(observe_playback_position, 1000);
 }
 
 window.onbeforeunload = function(e) {

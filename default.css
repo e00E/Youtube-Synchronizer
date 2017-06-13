@@ -10,8 +10,11 @@ body {
 	display: none;
 }
 
+#controls_container {
+	display: flex;
+}
+
 .controls{
-	float: left;
 	margin: 10px;
 }
 
@@ -70,6 +73,60 @@ body {
 
 .active_video, .active_session {
 	background-color: orange;
+}
+
+#draggable_controls_fixed {
+	flex-grow: 100;
+}
+
+#draggable_controls_container {
+	display: none;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 101;
+	width: 90vw;
+	margin: 10px;
+	opacity: 0.6;
+	background-color: white;
+	border: 1px solid white;
+	border-radius: 8px;
+}
+
+#draggable_controls {
+	padding: 5px;
+}
+
+#button_group {
+	border: 2px solid black;
+	display: inline-block;
+	float: left;
+}
+
+#playpause, #resync, #toggle_ui {
+	height: 50px;
+	width: 60px;
+	color: black;
+	float: left;
+	display: inline-block;
+	border: none;
+	text-align: center;
+	border-right: 2px solid black;
+}
+
+#toggle_ui {
+	border-right: none;
+}
+
+#play_svg, #pause_svg {
+	fill: black;
+	display: block;
+	margin: auto;
+}
+
+#seek_slider {
+	width: 100%;
+	color: grey;
 }
 
 #centered_content {
