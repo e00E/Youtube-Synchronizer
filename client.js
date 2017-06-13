@@ -37,6 +37,8 @@ function init() {
 	// And only if that also doesnt exist we create a new session
 	// This prevents many "ghost" sessions from staying around if a user for example refreshes a page loaded with parameters, or revisists the same parameter url multiple times
 	if(url.searchParams.get("v") !== null) {
+		// If site opened with parameters the user probably does not want to see the ui, just to play the videos
+		hide_ui();
 		let videos = {};
 
 		// Parse all videos from the url
@@ -100,6 +102,7 @@ function init() {
 		
 		join_session(session);
 	} else { // If we dont have videos in url parameters we can join any session
+		user_interface.style.display = "block";
 		if(! join_any_session()) {
 			create_session("initial");
 			join_session("initial");
