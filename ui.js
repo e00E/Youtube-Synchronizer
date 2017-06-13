@@ -89,12 +89,19 @@ function on_state_change(id, event) {
 	
 	// When videos are initially loaded we autoplay them to make the player start loading the video and display a frame from the video instead of a loading icon
 	// then when the video has started playing we can pause it seek it back to its correct position
-	if(state === 1 && displaying_videos[id].initializing) {
-		displaying_videos[id].initializing = false;
-		event.target.pauseVideo();
-		event.target.seekTo(get_playback_position(session) + session.videos[id].offset, true);
-		if(session.videos[id].muted) { displaying_videos[id].player.mute(); }
-		else { displaying_videos[id].player.unMute(); }
+	if(displaying_videos[id].initializing) {
+		if(state === 1) {
+			displaying_videos[id].initializing = false;
+			event.target.pauseVideo();
+			event.target.seekTo(get_playback_position(session) + session.videos[id].offset, true);
+			if(session.videos[id].muted) { displaying_videos[id].player.mute(); }
+			else { displaying_videos[id].player.unMute(); }
+		}
+	} else if(state === 1) {
+		initiate_play();
+	} else if(state === 2) {
+		initiate_pause();
+	} else if(state === 3) {
 	}
 }
 
@@ -366,23 +373,31 @@ document.getElementById("add_video").onclick = function() {
 	}
 }
 
+function initiate_play() {
+	const message = make_resume_message(active_session);
+	channel.postMessage(message);
+	handle_resume_message(message.data);
+	write_storage();
+}
+
 document.getElementById("play").onclick = function() {
 	const session = sessions[active_session];
 	if(! session.playing) {
-		const message = make_resume_message(active_session);
-		channel.postMessage(message);
-		handle_resume_message(message.data);
-		write_storage();
+		initiate_play();
 	}
+}
+
+function initiate_pause() {
+	const message = make_pause_message(active_session);
+	channel.postMessage(message);
+	handle_pause_message(message.data);
+	write_storage();
 }
 
 document.getElementById("pause").onclick = function() {
 	const session = sessions[active_session];
 	if(session.playing) {
-		const message = make_pause_message(active_session);
-		channel.postMessage(message);
-		handle_pause_message(message.data);
-		write_storage();
+		initiate_pause();
 	}
 }
 
