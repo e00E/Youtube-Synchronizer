@@ -34,8 +34,14 @@
 </table>
 </div>
 </div>
-<div class="controls">
+<div id="other_controls" class="controls">
+<b>Other: </b><br>
+<button id="share_link" type="button" title="Create a link containing the current session to send to other people.">share</button>
+<button id="toggle_ui" type="button" title="Show or hide the user interface.">hide UI</button>
+</div>
+<div id="draggable_controls_fixed" class="controls">
 <b>Playback: </b><br>
+<div id="draggable_controls" style="background-color: white;">
 <button id="play" type="button" title="Resume playback of all videos.">
 <svg width="16" height="16" viewBox="0 0 8 8">
   <path d="M0 0v6l6-3-6-3z" transform="translate(1 1)" />
@@ -58,14 +64,11 @@
 </button>
 <input type="text" id="seek_time" placeholder="hh:mm:ss" value="" size="4">
 </div>
-<div class="controls">
-<b>Other: </b><br>
-<button id="share_link" type="button" title="Create a link containing the current session to send to other people.">share</button>
 </div>
 <div style="clear: both"></div>
 <div id="help_text">
 <b>Help: </b><br>
-This site <b>synchronizes</b> playback of multiple videos and supports playback multiple tabs. It probably only works in recent versions of Chrome and Firefox.<br>
+This site <b>synchronizes</b> playback of multiple videos and supports playback in multiple tabs. It probably only works in recent versions of Chrome and Firefox.<br>
 Each browser <b>tab</b> takes part in a <b>session</b> and each session contains <b>videos</b> whose playback is synchronized.
 Each video has a <b>starting time</b> which is used for synchronization and each <b>tab</b> can show or hide videos individually.<br>
 If you are playing videos with <b>shared audio</b> for example from a <i>Let's play</i> by multiple people you probably want to <b>mute</b> all but one video.<br>
@@ -82,7 +85,9 @@ The source code is here: <a href="https://github.com/e00E/Youtube-Synchronizer">
 <div id="centered_content">
 <div id="videosdisplay"></div>
 </div>
-
+<div id="drag_helper" style="display: none; position: fixed; top: 0px; left: 0px; height: 100%; width: 100%; z-index: 100;"></div>
+<div id="draggable_controls_container" draggable="true" style="display: none; position: absolute; top: 0px; left: 0px; z-index: 101;">
+</div>
 <script defer src="messages.js"></script>
 <script defer src="session.js"></script>
 <script defer src="url_parser.js"></script>

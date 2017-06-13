@@ -107,7 +107,7 @@ function ui_show_video(id, on_ready=function(){}, start=0.0) {
 				playerVars: {
 					autoplay: 1,
 					controls: 2, // Dont disable so user can do manual control. If they fuck up they can resync.
-					disablekb: 1, // maybe disable to use own hotkeys
+					disablekb: 0, // maybe disable to use own hotkeys
 					enablejsapi: 1, // TODO: for some reason it still works when set to 0
 					fs: 1,
 					modestbranding: 0,
@@ -446,19 +446,67 @@ function parse_time(input) {
 	}
 }
 
-let hidden = false;
+let ui_is_hidden = false;
+let draggable_controls_container_is_hidden = true;
+const draggable_controls_fixed = document.getElementById("draggable_controls_fixed");
+const other_controls = document.getElementById("other_controls");
+const toggle_ui = document.getElementById("toggle_ui");
+toggle_ui.onclick = function() {
+	if(ui_is_hidden) { show_ui(); }
+	else { hide_ui(); }
+};
+
+function show_ui() {
+	draggable_controls.parentNode.removeChild(draggable_controls);
+	draggable_controls_fixed.appendChild(draggable_controls);
+	toggle_ui.parentNode.removeChild(toggle_ui);
+	other_controls.appendChild(toggle_ui);
+	toggle_ui.textContent = "hide UI";
+	user_interface.style.display = "";
+	ui_is_hidden = false;
+	ui_tile();
+}
+
+function hide_ui() {
+	user_interface.style.display = "none";
+	ui_is_hidden = true;
+	ui_tile();
+	toggle_ui.parentNode.removeChild(toggle_ui);
+	toggle_ui.textContent = "show UI";
+	draggable_controls.appendChild(toggle_ui);
+	draggable_controls.parentNode.removeChild(draggable_controls);
+	draggable_controls_container.appendChild(draggable_controls);
+}
+
+function show_draggable_controls_container() {
+	if(draggable_timer !== null) { window.clearTimeout(draggable_timer); }
+	draggable_controls_container.style.display = "";
+	draggable_controls_container_is_hidden = false;
+	fade_out_draggable_controls_container();
+}
+
+function hide_draggable_controls_container() {
+	draggable_controls_container.style.display = "none";
+	draggable_controls_container_is_hidden = true;
+}
+
+let draggable_timer = null;
+function fade_out_draggable_controls_container() {
+	window.clearTimeout(draggable_timer);
+	draggable_timer = window.setTimeout(hide_draggable_controls_container, 5000);
+}
+
 document.addEventListener("keydown", function(event) {
 	switch (event.key) {
 		case "h":
 			event.preventDefault();
-			if(hidden) {
-				user_interface.style.display = "";
-				hidden = false;
+			if(ui_is_hidden) {
+				show_ui();
+				hide_draggable_controls_container();				
 			}else {
-				user_interface.style.display = "none";
-				hidden = true;
+				hide_ui();
+				show_draggable_controls_container();	
 			}
-			ui_tile();
 			break;
 		case " ":
 			event.preventDefault();
@@ -473,15 +521,52 @@ document.addEventListener("keydown", function(event) {
 	}
 }, false);
 
-window.addEventListener("blur", function(event) {
-	// We can not call window.focus immediately or the blur will still go through
-	// Which is why we use a timer with a 0 delay instead
-	window.setTimeout(function() { window.focus(); }, 0);
+// Use mouse events to find out when we need to show the draggable controls
+// Its For mouseout window is used because it seems to only trigger when the mouse leaves or enters an iframe
+// For mouseenter document is used because it triggers when the cursor reenters the browser window.
+window.addEventListener("mouseout", function(event) {
+	if(ui_is_hidden && draggable_controls_container_is_hidden) {
+		show_draggable_controls_container();
+	}
+});
+document.addEventListener("mouseenter", function(event) {
+	if(ui_is_hidden && draggable_controls_container_is_hidden) {
+		show_draggable_controls_container();
+	}
+});
+// This does not trigger if the mouse is moved while inside an iframe
+window.addEventListener("mousemove", function(event) {
+	if(ui_is_hidden && draggable_controls_container_is_hidden) {
+		show_draggable_controls_container();
+	}
 });
 
-window.onbeforeunload = function(e) {
-  resync();
-};
+// https://stackoverflow.com/a/6239882
+// Make playback controls draggable
+function drag_start(event) {
+	drag_helper.style.display = "";
+    const style = window.getComputedStyle(event.target, null);
+    event.dataTransfer.setData("text/plain",
+    (parseInt(style.getPropertyValue("left"),10) - event.clientX) + "," + (parseInt(style.getPropertyValue("top"),10) - event.clientY));
+}
+function drop(event) {
+	drag_helper.style.display = "none";
+    const offset = event.dataTransfer.getData("text/plain").split(',');
+    draggable_controls_container.style.left = (event.clientX + parseInt(offset[0],10)) + "px";
+    draggable_controls_container.style.top = (event.clientY + parseInt(offset[1],10)) + "px";
+    event.preventDefault();
+    return false;
+}
+function drag_over(event) {
+    event.preventDefault();
+    return false;
+}
+const draggable_controls_container = document.getElementById("draggable_controls_container");
+const draggable_controls = document.getElementById("draggable_controls");
+const drag_helper = document.getElementById("drag_helper");
+draggable_controls_container.addEventListener('dragstart',drag_start,false);
+document.body.addEventListener('dragover',drag_over,false);
+document.body.addEventListener('drop',drop,false);
 
 let mute_observer = null;
 function observe_mutes() {
@@ -504,3 +589,7 @@ function ui_init() {
 	// There is no mute event in the youtube player api so we need to manually check if mute state changed
 	mute_observer = window.setInterval(observe_mutes, 10000);
 }
+
+window.onbeforeunload = function(e) {
+  resync();
+};
