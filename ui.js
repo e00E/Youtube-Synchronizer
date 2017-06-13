@@ -431,8 +431,10 @@ function compute_seek_ranges() {
 		const video_session = session.videos[key];
 		const video_displaying = displaying_videos[key];
 		
-		const duration = video_displaying.player.getDuration() - video_session.offset
-		if(duration < shortest_duration) { shortest_duration = duration; }
+		if(video_displaying.player.hasOwnProperty(getDuration)) {
+			const duration = video_displaying.player.getDuration() - video_session.offset
+			if(duration < shortest_duration) { shortest_duration = duration; }
+		}
 	}
 	seek_slider.max = shortest_duration;
 }
