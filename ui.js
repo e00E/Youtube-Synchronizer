@@ -107,11 +107,12 @@ function ui_show_video(id, on_ready=function(){}, start=0.0) {
 				playerVars: {
 					autoplay: 1,
 					controls: 2, // Dont disable so user can do manual control. If they fuck up they can resync.
-					disablekb: 0, // maybe disable to use own hotkeys
+					disablekb: 1, // maybe disable to use own hotkeys
 					enablejsapi: 1, // TODO: for some reason it still works when set to 0
 					fs: 1,
 					modestbranding: 0,
 					//origin: 'localhost', // TODO
+					//widget_referrer
 					rel: 0,
 					showinfo: 1,
 					start: Math.floor(start)
@@ -446,7 +447,7 @@ function parse_time(input) {
 }
 
 let hidden = false;
-document.addEventListener('keydown', function(event) {
+document.addEventListener("keydown", function(event) {
 	switch (event.key) {
 		case "h":
 			event.preventDefault();
@@ -471,6 +472,12 @@ document.addEventListener('keydown', function(event) {
 		  return; // Quit when this doesn't handle the key event.
 	}
 }, false);
+
+window.addEventListener("blur", function(event) {
+	// We can not call window.focus immediately or the blur will still go through
+	// Which is why we use a timer with a 0 delay instead
+	window.setTimeout(function() { window.focus(); }, 0);
+});
 
 window.onbeforeunload = function(e) {
   resync();
