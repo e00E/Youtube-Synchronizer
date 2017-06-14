@@ -15,9 +15,7 @@ If you don't want to enable javascript you can still find the source code at <a 
 <div class="controls">
 <b>Sessions: </b>
 <button id="add_session" type="button" title="Create and join a new emtpy session.">
-<svg height="16" width="16" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
-   <path d="M3 0v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2z" />
-</svg>
+<img id="add_session_img" src="/svg/plus.svg">
 </button><br>
 <div id="session_table_container">
 <table id="session_table">
@@ -28,9 +26,7 @@ If you don't want to enable javascript you can still find the source code at <a 
 </div>
 <div class="controls">
 <b>Videos: </b><button id="add_video" type="button" title="Add and show a new video.">
-<svg height="16" width="16" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
-   <path d="M3 0v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2z" />
-</svg>
+<img id="add_video_img" src="/svg/plus.svg">
 </button><br>
 <div id="video_table_container">
 <table id="video_table">
@@ -47,12 +43,8 @@ If you don't want to enable javascript you can still find the source code at <a 
 <div id="draggable_controls">
 <div id="button_group">
 <button id="playpause" type="button" title="Play or pause all videos.">
-<svg id="play_svg" width="32" height="32" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0 0v6l6-3-6-3z" transform="translate(1 1)" />
-</svg>
-<svg id="pause_svg" style="display: none;" width="32" height="32" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0 0v6h2v-6h-2zm4 0v6h2v-6h-2z" transform="translate(1 1)" />
-</svg>
+<img id="play_svg" src="/svg/media-play.svg">
+<img id="pause_svg" src="/svg/media-pause.svg" style="display: none;">
 </button>
 <button id="resync" type="button" title="Pause and resynchronize playback of all videos.">resync</button>
 <button id="toggle_ui" type="button" title="Show or hide the user interface.">hide UI</button>

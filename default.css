@@ -29,8 +29,11 @@ body {
 	padding: 2px;
 	display: flex;
 	align-items: center;
-	/*height: 25px;
-	width: 25px;*/
+}
+
+#add_session_img, #add_video_img, .remove_session_img, .remove_video_img {
+	height: 16px;
+	width: 16px;
 }
 
 #session_table_container, #video_table_container {
@@ -113,13 +116,13 @@ body {
 }
 
 #playpause, #resync, #toggle_ui {
+	display: flex;
+	align-items: center;
 	height: 50px;
 	width: 65px;
 	color: black;
 	float: left;
-	display: inline-block;
 	border: none;
-	text-align: center;
 	border-right: 2px solid black;
 }
 
@@ -131,6 +134,8 @@ body {
 	fill: black;
 	display: block;
 	margin: auto;
+	height: 32px;
+	width: 32px;
 }
 
 #seek_slider {

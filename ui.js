@@ -200,15 +200,10 @@ function ui_remove_session_click(event) {
 
 
 function make_delete_svg() {
-	const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-	svg.setAttributeNS(null, "height", "16");
-	svg.setAttributeNS(null, "width", "16");
-	svg.setAttributeNS(null, "viewBox", "0 0 8 8");
-	
-	const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-	path.setAttributeNS(null, "d", "M0 0v2h8v-2h-8z");
-	path.setAttributeNS(null, "transform", "translate(0 3)");
-	svg.appendChild(path);
+	const element = document.createElement("img");
+	element.classList.add("remove_session_img");
+	element.setAttribute("src", "/svg/minus.svg");
+	return element;
 	
 	return svg;
 }
