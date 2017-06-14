@@ -202,7 +202,7 @@ function ui_remove_session_click(event) {
 function make_delete_svg() {
 	const element = document.createElement("img");
 	element.classList.add("remove_session_img");
-	element.setAttribute("src", "/svg/minus.svg");
+	element.setAttribute("src", "svg/minus.svg");
 	return element;
 	
 	return svg;
