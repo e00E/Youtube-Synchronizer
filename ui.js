@@ -451,7 +451,7 @@ function compute_seek_ranges() {
 			if(duration < shortest_duration) { shortest_duration = duration; }
 		}
 	}
-	seek_slider.max = shortest_duration;
+	seek_slider.max = shortest_duration === Number.POSITIVE_INFINITY ? 0 : shortest_duration;
 }
 
 seek_slider.onchange = function() {
