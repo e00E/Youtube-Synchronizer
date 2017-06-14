@@ -199,6 +199,20 @@ function ui_remove_session_click(event) {
 }
 
 
+function make_delete_svg() {
+	const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+	svg.setAttributeNS(null, "height", "16");
+	svg.setAttributeNS(null, "width", "16");
+	svg.setAttributeNS(null, "viewBox", "0 0 8 8");
+	
+	const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+	path.setAttributeNS(null, "d", "M0 0v2h8v-2h-8z");
+	path.setAttributeNS(null, "transform", "translate(0 3)");
+	svg.appendChild(path);
+	
+	return svg;
+}
+
 function ui_add_session(name) {	
 	const row = session_table.insertRow(-1);
 	row.setAttribute("data-session", name);
@@ -219,7 +233,8 @@ function ui_add_session(name) {
 	element = document.createElement("button");
 	element.setAttribute("type", "button");
 	element.classList.add("delete_session_button");
-	element.textContent = "X";
+	element.appendChild(make_delete_svg());
+
 	element.onclick = ui_remove_session_click;
 	cell.appendChild(element);
 }
@@ -325,8 +340,8 @@ function ui_add_video(name) {
 	element = document.createElement("button");
 	element.setAttribute("type", "button");
 	element.classList.add("remove_video_button");
-	element.textContent = "X";
 	element.onclick = ui_remove_video_click;
+	element.appendChild(make_delete_svg());
 	cell.appendChild(element);
 }
 
@@ -431,7 +446,7 @@ function compute_seek_ranges() {
 		const video_session = session.videos[key];
 		const video_displaying = displaying_videos[key];
 		
-		if(video_displaying.player.hasOwnProperty(getDuration)) {
+		if(video_displaying.player.hasOwnProperty("getDuration")) {
 			const duration = video_displaying.player.getDuration() - video_session.offset
 			if(duration < shortest_duration) { shortest_duration = duration; }
 		}

@@ -39,20 +39,29 @@ body {
 	float: left;
 }
 
+#session_table {
+	width: 95px;
+}
+
+#video_table {
+	width: 190px;
+}
+
 #session_table, #video_table {
 	border-collapse: collapse;
 }
 
 #session_table, #video_table, th, td {
-	/*border: 1px solid black;*/
+	padding-right: 0px;
 }
 
 .delete_session_button, .remove_video_button {
 	background-color: Tomato;
 	border: 1px solid black;
-	padding: 0px;
-	height: 20px;
-	width: 20px;
+	padding: 2px;
+	float: right;
+	display: flex;
+	align-items: center;
 }
 
 .session_radio_button, .video_visibility_checkbox{
@@ -105,7 +114,7 @@ body {
 
 #playpause, #resync, #toggle_ui {
 	height: 50px;
-	width: 60px;
+	width: 65px;
 	color: black;
 	float: left;
 	display: inline-block;
