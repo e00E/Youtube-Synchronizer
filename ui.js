@@ -543,7 +543,7 @@ function hide_draggable_controls_container() {
 let draggable_timer = null;
 function fade_out_draggable_controls_container() {
 	window.clearTimeout(draggable_timer);
-	draggable_timer = window.setTimeout(hide_draggable_controls_container, 50000);
+	draggable_timer = window.setTimeout(hide_draggable_controls_container, 5000);
 }
 
 document.addEventListener("keydown", function(event) {
