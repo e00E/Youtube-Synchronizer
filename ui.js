@@ -203,6 +203,7 @@ function make_delete_svg() {
 	const element = document.createElement("img");
 	element.classList.add("remove_session_img");
 	element.setAttribute("src", "svg/minus.svg");
+	element.setAttribute("alt", "Delete");
 	return element;
 	
 	return svg;
@@ -214,6 +215,7 @@ function ui_add_session(name) {
 
 	let cell = row.insertCell(-1);
 	let element = document.createElement("input");
+	element.setAttribute("title", "Change active session");
 	element.setAttribute("type", "radio");
 	element.setAttribute("name", "session");
 	element.classList.add("session_radio_button");
@@ -221,11 +223,15 @@ function ui_add_session(name) {
 	cell.appendChild(element);
 	
 	cell = row.insertCell(-1);
-	cell.appendChild(document.createTextNode(name));
+	element = document.createElement("span");
+	element.textContent = name;
+	element.setAttribute("title", "Session name");
+	cell.appendChild(element);
 	// TODO: how to style the text, need to wrap it in span I think
 	
 	cell = row.insertCell(-1);
 	element = document.createElement("button");
+	element.setAttribute("title", "Delete this session")
 	element.setAttribute("type", "button");
 	element.classList.add("delete_session_button");
 	element.appendChild(make_delete_svg());
@@ -312,6 +318,7 @@ function ui_add_video(name) {
 
 	let cell = row.insertCell(-1);
 	let element = document.createElement("input");
+	element.setAttribute("title", "Toggle visibility");
 	element.setAttribute("type", "checkbox");
 	element.setAttribute("name", "video");
 	element.classList.add("video_visibility_checkbox");
@@ -319,11 +326,14 @@ function ui_add_video(name) {
 	cell.appendChild(element);
 	
 	cell = row.insertCell(-1);
-	cell.appendChild(document.createTextNode(name));
-	// TODO: how to style the text, need to wrap it in span I think
+	element = document.createElement("span");
+	element.textContent = name;
+	element.setAttribute("title", "Video id");
+	cell.appendChild(element);
 	
 	cell = row.insertCell(-1);
 	element = document.createElement("input");
+	element.setAttribute("title", "Starting playback time")
 	element.setAttribute("type", "text");
 	element.setAttribute("name", "offset");
 	element.classList.add("video_offset_text");
@@ -333,6 +343,7 @@ function ui_add_video(name) {
 	
 	cell = row.insertCell(-1);
 	element = document.createElement("button");
+	element.setAttribute("title", "Remove this video");
 	element.setAttribute("type", "button");
 	element.classList.add("remove_video_button");
 	element.onclick = ui_remove_video_click;
